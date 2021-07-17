@@ -42,7 +42,12 @@ public class JwtAuthenticationController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(user));
+		
+		if(user.getPhoneno().length() != 10){
+			throw new Exception("INVALID_PHONENO");
+		}else {
+			return ResponseEntity.ok(userDetailsService.save(user));
+		}
 	}
 
 	private void authenticate(String username, String password) throws Exception {
