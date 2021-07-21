@@ -1,6 +1,8 @@
 package com.nattav.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 
 /**
@@ -24,6 +26,10 @@ public class UserDao {
     private String phoneno;
     @Column
     private String refcode;
+    @Column
+    private BigDecimal salary;
+    @Column
+    private String member_level;
 
     public String getUsername() {
         return username;
@@ -63,6 +69,22 @@ public class UserDao {
 
 	public void setRefcode(String refcode) {
 		this.refcode = refcode;
+	}
+
+	public BigDecimal getSalary() {
+		return salary;
+	}
+
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
+
+	public String getMember_level() {
+		return member_level;
+	}
+
+	public void setMember_level(String member_level) {
+		this.member_level = member_level;
 	}
 
 }

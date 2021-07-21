@@ -32,6 +32,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
 				new ArrayList<>());
 	}
+	
+	public UserDao getUserObjByUsername(String username) throws UsernameNotFoundException {
+		UserDao user = userDao.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found with username: " + username);
+		}
+		return user;
+	}
 
 	public UserDao save(UserDto user) {
 		UserDao newUser = new UserDao();
@@ -40,6 +48,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setAddress(user.getAddress());
 		newUser.setPhoneno(user.getPhoneno());
 		newUser.setRefcode(genReferenceCode(user.getPhoneno()));
+		newUser.setSalary(user.getSalary());
+		newUser.setMember_level(user.getMember_level());
 		return userDao.save(newUser);
 	}
 	

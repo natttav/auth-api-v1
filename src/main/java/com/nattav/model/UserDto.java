@@ -1,11 +1,15 @@
 package com.nattav.model;
 
+import java.math.BigDecimal;
+
 public class UserDto {
 	private String username;
 	private String password;
 	private String address;
 	private String phoneno;
 	private String refcode;
+	private BigDecimal salary;
+	private String member_level;
 
 	public String getUsername() {
 		return username;
@@ -46,4 +50,21 @@ public class UserDto {
 	public void setRefcode(String refcode) {
 		this.refcode = refcode;
 	}
+
+	public BigDecimal getSalary() {
+		return salary;
+	}
+
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
+
+	public String getMember_level() {
+		return member_level;
+	}
+
+	public void setMember_level(String member_level) {
+		this.member_level = member_level;
+	}
+	
 }
