@@ -1,1 +1,1 @@
-# spring-boot-jwt-auth-api
+# auth API
