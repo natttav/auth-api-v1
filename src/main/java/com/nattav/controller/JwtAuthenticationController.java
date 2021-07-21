@@ -1,15 +1,18 @@
 package com.nattav.controller;
 
 import com.nattav.config.JwtTokenUtil;
-import com.nattav.model.CommonResponse;
 import com.nattav.model.JwtRequest;
 import com.nattav.model.JwtResponse;
-import com.nattav.model.ResponseStatusObject;
 import com.nattav.model.UserDto;
+import com.nattav.model.common.CommonMsgObject;
+import com.nattav.model.common.CommonResponse;
+import com.nattav.model.common.CommonResponseDataObject;
+import com.nattav.model.common.CommonStatusObject;
 import com.nattav.service.JwtUserDetailsService;
 
 import java.math.BigDecimal;
 
+import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +42,10 @@ public class JwtAuthenticationController {
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		ResponseStatusObject status = new ResponseStatusObject("0000", "Success");
-		CommonResponse response = new CommonResponse(status, new JwtResponse(token));
-		return ResponseEntity.ok(response);
+		CommonResponseDataObject reponseData = new CommonResponseDataObject();
+		reponseData.setStatus(new CommonStatusObject("0000", "Success"));
+		reponseData.setData(new JwtResponse(token));
+		return ResponseEntity.ok(reponseData);
 	}
 
 	@RequestMapping(value = "/authentication/register", method = RequestMethod.POST)
@@ -63,16 +67,19 @@ public class JwtAuthenticationController {
 			} else {
 				user.setMember_level("Undefined");
 
-				ResponseStatusObject status = new ResponseStatusObject("R001",
-						"Registeration failed: Your profile is not fit with member criteria, thank you for your interesting.");
-				CommonResponse response = new CommonResponse(status, null);
-				userDetailsService.save(user);
-				return ResponseEntity.ok(response);
-			}
-			ResponseStatusObject status = new ResponseStatusObject("0000", "Success");
-			CommonResponse response = new CommonResponse(status, userDetailsService.save(user));
+				CommonMsgObject responseError = new CommonMsgObject();
+				responseError.setStatus(new CommonStatusObject("R001", "Registeration failed"));
+				responseError.setMessage(
+						"Your salary is not pass member registration criteria, thank you for your interesting.");
 
-			return ResponseEntity.ok(response);
+				userDetailsService.save(user);
+				return ResponseEntity.ok(responseError);
+			}
+			CommonResponseDataObject responseDataObject = new CommonResponseDataObject();
+			responseDataObject.setStatus(new CommonStatusObject("0000", "Success"));
+			responseDataObject.setData(userDetailsService.save(user));
+
+			return ResponseEntity.ok(responseDataObject);
 		}
 	}
 

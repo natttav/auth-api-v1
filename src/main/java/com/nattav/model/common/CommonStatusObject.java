@@ -1,6 +1,6 @@
-package com.nattav.model;
+package com.nattav.model.common;
 
-public class ResponseStatusObject {
+public class CommonStatusObject {
 	private String code;
 	private String message;
 
@@ -20,7 +20,7 @@ public class ResponseStatusObject {
 		this.message = message;
 	}
 
-	public ResponseStatusObject(String code, String message) {
+	public CommonStatusObject(String code, String message) {
 		super();
 		this.code = code;
 		this.message = message;

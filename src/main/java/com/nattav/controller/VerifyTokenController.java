@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nattav.config.JwtTokenUtil;
-import com.nattav.model.CommonResponse;
 import com.nattav.model.JwtResponse;
-import com.nattav.model.ResponseStatusObject;
 import com.nattav.model.UserDao;
 import com.nattav.model.VerificationResponse;
+import com.nattav.model.common.CommonResponse;
+import com.nattav.model.common.CommonResponseDataObject;
+import com.nattav.model.common.CommonStatusObject;
 import com.nattav.repository.UserRepository;
 import com.nattav.service.JwtUserDetailsService;
 @RestController
@@ -31,18 +32,15 @@ public class VerifyTokenController {
     public ResponseEntity<?>  verify(HttpServletRequest request) {
 
 		final String requestTokenHeader = request.getHeader("Authorization");
-		final String token = requestTokenHeader.substring(7);
-//		final String token = requestTokenHeader.replaceAll("Bearer ", "");
+		final String token = requestTokenHeader.replaceAll("Bearer ", "");
 		JwtResponse jwtResponse = new JwtResponse(token);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		UserDao userDao = userDetailsService.getUserObjByUsername(username);
 		
-
-		ResponseStatusObject status = new ResponseStatusObject("0000", "Success");
-		CommonResponse response = new CommonResponse(status, setResponse(userDao, jwtResponse));
-		
-		
-		return ResponseEntity.ok(response);
+		CommonResponseDataObject responseDataObject = new CommonResponseDataObject();
+		responseDataObject.setStatus(new CommonStatusObject("0000", "Success"));
+		responseDataObject.setData(setResponse(userDao, jwtResponse));
+		return ResponseEntity.ok(responseDataObject);
     }
     
     
